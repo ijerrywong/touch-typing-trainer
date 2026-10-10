@@ -1,0 +1,79 @@
+/* 页面布局。零字面量 */
+
+/* ds 原语自带 display，会盖掉 hidden 属性 */
+[hidden] { display: none !important; }
+body { margin: 0; }
+
+.app-nav { gap: var(--space-gutter); }
+.app-tabs { border-bottom: none; align-self: stretch; }
+
+.app {
+  max-width: var(--kb-max-width); /* 显示框、键盘、说明三者左右对齐 */
+  margin: 0 auto;
+  padding: var(--space-gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+}
+
+/* ---- 熟悉键位 ---- */
+.learn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-group);
+  padding-block: var(--space-gutter);
+}
+.learn-prompt {
+  font-family: var(--font-mono);
+  font-size: var(--prompt-size);
+  font-weight: var(--weight-strong);
+  line-height: var(--leading-tight);
+  text-align: center;
+}
+/* 空格写成中文「空格」，字号降一档免得撑破 */
+.learn-prompt.is-word { font-family: var(--font-body); font-size: var(--text-4xl); }
+.learn-prompt.is-wrong { animation: learn-shake var(--motion-normal) var(--ease); color: var(--color-danger); }
+@keyframes learn-shake {
+  25% { transform: translateX(calc(var(--space-2) * -1)); }
+  75% { transform: translateX(var(--space-2)); }
+}
+
+.learn-hint {
+  display: flex;
+  gap: var(--space-group);
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: calc(var(--text-base) * var(--leading-normal));
+}
+/* 手指名字带上它的颜色，和键盘、手对上 */
+.learn-finger {
+  padding: var(--space-1) var(--space-2);
+  border: var(--border-width) solid var(--f);
+  background: var(--f-tint);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-medium);
+}
+
+.learn-style { padding-top: var(--space-group); }
+/* 切换按钮的选中态 */
+.ds-btn[aria-pressed="true"] {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border-strong);
+  color: var(--color-fg);
+}
+
+/* ---- 提升速度 ---- */
+.app-custom { border-bottom: var(--border-width) solid var(--border-color); }
+
+/* ---- 使用说明 ---- */
+.guide {
+  margin: 0;
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-group);
+  line-height: var(--leading-normal);
+  color: var(--color-fg-muted);
+}
+.guide b { color: var(--color-fg); font-weight: var(--weight-strong); }

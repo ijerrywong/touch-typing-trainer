@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S8 文字显示框</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../../src/styles/textview.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">S8 文字显示框（接 S4 输入 + S6 计分）</h1>
+    <ol class="spike-check ds-muted">
+      <li>未打的字是灰的，打对变黑，打错标红；打错的空格有红色下划线</li>
+      <li>光标在当前字左边闪</li>
+      <li>退格：回到上一个字，红色消失</li>
+      <li>打到第三行时文字自动往上滚，当前行保持在第二行</li>
+      <li>打完显示 WPM / 准确率</li>
+    </ol>
+  </header>
+  <div class="ds-card"><div class="ds-card__body" id="tv"></div></div>
+  <div class="ds-row ds-mono" id="stats"></div>
+  <div class="ds-row"><button class="ds-btn" id="restart">重来</button></div>
+</main>
+<script type="module">
+  import { createTextView } from '../../src/textview.js';
+  import { createSession } from '../../src/session.js';
+  import { attachInput } from '../../src/input.js';
+  import { SAMPLES } from '../../src/text.js';
+
+  const tv = createTextView(document.getElementById('tv'));
+  const statsEl = document.getElementById('stats');
+  let session;
+  function start() {
+    session = createSession(SAMPLES.slice(1).join(' '));
+    tv.render(session);
+    showStats();
+  }
+  function showStats() {
+    const s = session.stats();
+    statsEl.textContent = `WPM ${s.wpm} · 准确率 ${s.accuracy}% · 错 ${s.mistakes} · 进度 ${Math.round(s.progress * 100)}% · ${s.seconds}s${session.done ? ' · 完成' : ''}`;
+  }
+  attachInput(window, {
+    onChar: (c) => { session.input(c); tv.sync(session); showStats(); },
+    onBackspace: () => { session.backspace(); tv.sync(session); showStats(); },
+  });
+  document.getElementById('restart').onclick = (e) => { e.target.blur(); start(); };
+  start();
+</script>
+</body>
+</html>

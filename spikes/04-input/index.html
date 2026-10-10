@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S4 键盘输入</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">S4 键盘输入</h1>
+    <ol class="spike-check ds-muted">
+      <li>打字母、数字、符号、空格：日志显示字符和 code，页面不滚动</li>
+      <li>按住 Shift 打大写：日志显示按的是左 Shift 还是右 Shift</li>
+      <li>按退格：显示「退格」，浏览器不后退</li>
+      <li>切换到中文输入法再打字：出现「输入法」提示</li>
+      <li>打开大写锁定：出现提示</li>
+      <li>Cmd+R 之类的快捷键照常生效；在下面的输入框里打字不被拦截</li>
+    </ol>
+  </header>
+  <div class="ds-row">
+    <span class="ds-badge" id="ime">输入法：正常</span>
+    <span class="ds-badge" id="caps">大写锁定：关</span>
+  </div>
+  <pre class="spike-log" id="log"></pre>
+  <input class="ds-input" placeholder="这里打字应该不被拦截">
+  <div class="spike-scroll-pad"></div><!-- 撑高页面，用来检查空格会不会滚屏 -->
+</main>
+<script type="module">
+  import { attachInput } from '../../src/input.js';
+  const log = document.getElementById('log');
+  const write = (s) => { log.textContent = `${s}\n${log.textContent}`.slice(0, 4000); };
+  const ime = document.getElementById('ime');
+  const caps = document.getElementById('caps');
+
+  attachInput(window, {
+    onChar: (c, m) => {
+      write(`字符 ${JSON.stringify(c)}  code=${m.code}  shift=${m.shiftSide ?? '-'}`);
+      ime.textContent = '输入法：正常'; ime.className = 'ds-badge ds-badge--success';
+    },
+    onBackspace: () => write('退格'),
+    onIme: () => { ime.textContent = '输入法：请切换到英文'; ime.className = 'ds-badge ds-badge--danger'; },
+    onCapsLock: (on) => { caps.textContent = `大写锁定：${on ? '开' : '关'}`; caps.className = `ds-badge ${on ? 'ds-badge--warning' : ''}`; },
+  });
+</script>
+</body>
+</html>

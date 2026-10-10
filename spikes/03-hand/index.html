@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3 半透明的手</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../../src/styles/fingers.css">
+<link rel="stylesheet" href="../../src/styles/keyboard.css">
+<link rel="stylesheet" href="../../src/styles/hand.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">S3 半透明的手</h1>
+    <ol class="spike-check ds-muted">
+      <li>手指尖落在 A S D F / J K L ; 上，大拇指在空格上</li>
+      <li>手是半透明的，下面的键帽和字都看得见</li>
+      <li>点手指按钮：那根手指淡色填充</li>
+      <li>输入一个字符：目标键高亮 + 对应手指填充（大写/符号会带上另一只手的 Shift）</li>
+      <li>「隐藏手」后键盘高度收回来</li>
+    </ol>
+  </header>
+  <div class="ds-row" id="fingers"></div>
+  <div class="ds-row">
+    <label class="ds-row">字符 <input class="ds-input" id="char" maxlength="1" value="Q"></label>
+    <button class="ds-btn" id="toggle">隐藏手</button>
+  </div>
+  <div id="kb"></div>
+</main>
+<script type="module">
+  import { createKeyboard } from '../../src/keyboard.js';
+  import { createHand } from '../../src/hand.js';
+  import { FINGERS, strokeFor } from '../../src/keymap.js';
+
+  const kb = createKeyboard();
+  kb.mount(document.getElementById('kb'));
+  const hand = createHand(kb);
+  hand.show();
+
+  const row = document.getElementById('fingers');
+  for (const [f, { name }] of Object.entries(FINGERS)) {
+    const b = document.createElement('button');
+    b.className = 'ds-btn';
+    b.textContent = name;
+    b.onclick = () => { hand.setActive([f]); kb.setTargets([]); };
+    row.append(b);
+  }
+
+  const input = document.getElementById('char');
+  function showChar() {
+    const s = strokeFor(input.value);
+    kb.setTargets(s ? s.keyIds : []);
+    hand.setActive(s ? s.fingers : []);
+  }
+  input.oninput = showChar;
+  showChar();
+
+  let shown = true;
+  document.getElementById('toggle').onclick = (e) => {
+    shown = !shown;
+    shown ? hand.show() : hand.hide();
+    e.target.textContent = shown ? '隐藏手' : '显示手';
+  };
+</script>
+</body>
+</html>

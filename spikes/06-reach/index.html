@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3c 手指伸向目标键</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../../src/styles/fingers.css">
+<link rel="stylesheet" href="../../src/styles/keyboard.css">
+<link rel="stylesheet" href="../../src/styles/hand.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">手指伸向目标键（已选 6 = 2 + 3）</h1>
+    <p class="ds-muted">都用线稿手。点下面的按钮换目标键，或打开「自动演示」轮流出远处的键；也可以直接在键盘上按键。点卡片可以放大。</p>
+  </header>
+  <div class="ds-row" id="keys"></div>
+  <div class="ds-row">
+    <button class="ds-btn" id="demo">自动演示：关</button>
+    <span class="ds-muted" id="now"></span>
+  </div>
+  <div class="spike-grid" id="grid"></div>
+</main>
+<script type="module">
+  import { createKeyboard } from '../../src/keyboard.js';
+  import { createHand } from '../../src/hand.js';
+  import { SHAPES } from '../../src/hand-geometry.js';
+  import { SINGLE_KEY, strokeFor, displayName } from '../../src/keymap.js';
+
+  const VARIANTS = [
+    { reach: 'stretch', desc: '手指从指根直接拉长到目标键，平滑滑过去；换题时滑回基准键再伸向新键。' },
+    { reach: 'stretch', ghost: true, name: '伸长 + 原位虚影', desc: '同 1，另外在基准键上留一个虚线手指，提醒按完要回到这里。' },
+    { reach: 'loop', desc: '手指反复「伸出去 → 停一下 → 收回基准键」，直接演示按完回家的动作。' },
+    { reach: 'shift', desc: '整只手朝目标方向挪一段，手指再伸剩下的距离，最像真人够远处的键。' },
+    { reach: 'spring', desc: '先往回缩一下再弹出去，略冲过头，到位后指尖每隔一会儿轻点一下。' },
+    { reach: 'loop', ghost: true, name: '✅ 选定：循环 + 原位虚影（2 + 3）', desc: '手指反复伸出去、停一下、收回；只要手指不在基准键上，基准键就留一个虚线虚影。' },
+  ];
+  const NAMES = { stretch: '直接伸长', ghost: '伸长 + 原位虚影', loop: '伸出—收回循环', shift: '整只手跟着挪', spring: '弹性生长' };
+
+  const grid = document.getElementById('grid');
+  const views = VARIANTS.map((v, i) => {
+    const card = document.createElement('section');
+    card.className = 'ds-card spike-variant';
+    card.innerHTML = `
+      <div class="ds-card__header"><div class="ds-row"><span class="spike-num">${i + 1}</span><h2 class="ds-h2">${v.name ?? NAMES[v.reach]}</h2></div></div>
+      <div class="ds-card__body ds-stack"><p class="ds-muted">${v.desc}</p><div class="kb-slot"></div></div>`;
+    card.onclick = () => card.classList.toggle('is-wide');
+    grid.append(card);
+    const kb = createKeyboard();
+    kb.mount(card.querySelector('.kb-slot'));
+    const hand = createHand(kb, { style: 'line', shape: SHAPES.curled, reach: v.reach, ghost: v.ghost });
+    hand.show();
+    return { kb, hand };
+  });
+
+  function show(c) {
+    const s = strokeFor(c);
+    document.getElementById('now').textContent = `当前：${displayName(c)}`;
+    for (const { kb, hand } of views) {
+      kb.setTargets([s.keyId]);
+      hand.setActive(s.fingers);
+      hand.setReach(s.keyId);
+    }
+  }
+
+  // 快捷按钮：远近各几个
+  const QUICK = ['1', 'q', 'z', 't', 'g', 'b', '6', 'y', 'h', 'n', 'p', '[', "'", '/', '=', 'a', ' '];
+  const row = document.getElementById('keys');
+  for (const c of QUICK) {
+    const b = document.createElement('button');
+    b.className = 'ds-btn';
+    b.textContent = displayName(c);
+    b.onclick = () => { b.blur(); show(c); };
+    row.append(b);
+  }
+  addEventListener('keydown', (e) => { if (e.key.length === 1 && strokeFor(e.key)) { e.preventDefault(); show(e.key.toLowerCase()); } });
+
+  let timer = null;
+  document.getElementById('demo').onclick = (e) => {
+    e.target.blur();
+    if (timer) { clearInterval(timer); timer = null; e.target.textContent = '自动演示：关'; return; }
+    e.target.textContent = '自动演示：开';
+    const tick = () => show(SINGLE_KEY[Math.floor(Math.random() * SINGLE_KEY.length)]);
+    tick();
+    timer = setInterval(tick, 2000);
+  };
+  show('1');
+</script>
+</body>
+</html>

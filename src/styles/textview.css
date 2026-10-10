@@ -1,0 +1,38 @@
+/* 文字显示框。零字面量，取值见 app-tokens.css */
+
+.tv {
+  /* 固定显示 3 行，超出的部分靠 translate 滚动 */
+  height: calc(var(--text-2xl) * var(--leading-loose) * 3);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-loose);
+}
+.tv-inner {
+  position: relative;
+  transition: transform var(--motion-normal) var(--ease);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.tv-char { color: var(--text-pending-fg); }
+.tv-char[data-state="correct"] { color: var(--text-correct-fg); }
+.tv-char[data-state="wrong"] {
+  color: var(--text-wrong-fg);
+  background: var(--text-wrong-bg);
+}
+/* 打错的空格看不见，加一道下划线 */
+.tv-char--space[data-state="wrong"] {
+  text-decoration: underline;
+  text-decoration-color: var(--text-wrong-fg);
+}
+
+/* 光标：当前字左边一条竖线 */
+.tv-char.is-current {
+  box-shadow: inset var(--text-cursor-width) 0 0 var(--text-cursor);
+  animation: tv-blink var(--kb-pulse) steps(1) infinite;
+}
+@keyframes tv-blink {
+  50% { box-shadow: none; }
+}
+.tv-char--end::after { content: " "; }

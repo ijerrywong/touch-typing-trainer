@@ -1,0 +1,8 @@
+# macOS
+.DS_Store
+
+# 依赖（目前没有，以后装了 npm 包会出现）
+node_modules/
+
+# Claude Code 的本机个人设置
+.claude/settings.local.json

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>盲打练习</title>
+<link rel="stylesheet" href="vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="src/styles/app-tokens.css">
+<link rel="stylesheet" href="src/styles/fingers.css">
+<link rel="stylesheet" href="src/styles/keyboard.css">
+<link rel="stylesheet" href="src/styles/hand.css">
+<link rel="stylesheet" href="src/styles/textview.css">
+<link rel="stylesheet" href="src/styles/app.css">
+</head>
+<body class="ds">
+<header class="ds-topbar">
+  <div class="ds-row app-nav">
+    <span class="ds-brand">盲打练习</span>
+    <nav class="ds-tabs app-tabs" role="tablist">
+      <button class="ds-tab" role="tab" data-mode="learn">熟悉键位</button>
+      <button class="ds-tab" role="tab" data-mode="speed">提升速度</button>
+    </nav>
+  </div>
+  <div class="ds-row-end">
+    <span class="ds-badge ds-badge--danger" id="ime-warn" hidden>中文输入法：请切换到英文</span>
+    <span class="ds-badge ds-badge--warning" id="caps-warn" hidden>大写锁定已开</span>
+  </div>
+</header>
+
+<main class="app">
+  <!-- 熟悉键位 -->
+  <section class="ds-card app-panel" data-panel="learn">
+    <div class="ds-card__body learn">
+      <div class="learn-prompt" id="learn-char" aria-live="polite"></div>
+      <div class="learn-hint" id="learn-hint"></div>
+      <div class="ds-row ds-muted ds-mono" id="learn-stats"></div>
+      <div class="ds-row learn-style" id="hand-style"><span class="ds-label">手的样式</span></div>
+    </div>
+  </section>
+
+  <!-- 提升速度 -->
+  <section class="ds-card app-panel" data-panel="speed" hidden>
+    <div class="ds-card__header">
+      <div class="ds-row ds-mono" id="speed-stats"></div>
+      <div class="ds-row-end">
+        <button class="ds-btn ds-btn--ghost" id="speed-next">换一段</button>
+        <button class="ds-btn ds-btn--ghost" id="speed-restart">重打</button>
+        <button class="ds-btn" id="speed-custom-toggle">自定义文字</button>
+      </div>
+    </div>
+    <div class="ds-card__body ds-stack app-custom" id="speed-custom" hidden>
+      <label class="ds-field">
+        <span class="ds-label">粘贴或输入一段英文</span>
+        <textarea class="ds-textarea" id="speed-custom-text" spellcheck="false"></textarea>
+        <span class="ds-field__hint" id="speed-custom-hint">换行会变成空格；弯引号、破折号会换成键盘上能打的字符。</span>
+      </label>
+      <div class="ds-row">
+        <button class="ds-btn ds-btn--primary" id="speed-custom-start">用这段练习</button>
+        <button class="ds-btn ds-btn--ghost" id="speed-custom-cancel">取消</button>
+      </div>
+    </div>
+    <div class="ds-card__body ds-stack">
+      <div id="speed-text"></div>
+      <div class="ds-row" id="speed-done" hidden>
+        <span class="ds-badge ds-badge--success">完成</span>
+        <span id="speed-result"></span>
+        <span class="ds-muted">按空格或回车再来一次</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-keyboard" id="keyboard"></div>
+
+  <!-- 使用说明：跟着模式切换 -->
+  <section class="ds-card" data-panel="learn">
+    <div class="ds-card__header"><h2 class="ds-h2">使用说明 · 熟悉键位</h2></div>
+    <div class="ds-card__body">
+      <ol class="guide">
+        <li><b>准备</b>：切换到英文输入法，关掉大写锁定。</li>
+        <li><b>手放好</b>：左手四指放在 A S D F，右手四指放在 J K L ;，两个大拇指轻放在空格上。两根食指摸一下 F 和 J 上的小凸起，不看键盘也能找到位置。</li>
+        <li><b>看提示</b>：显示框出现一个字符，键盘上对应的键会闪烁，手上该用的那根手指会变色；如果目标键不在基准键上，这根手指会反复伸过去再收回来，基准键上的虚线是它的「家」。下面还写着「哪根手指按哪个键」。手可以在「线稿」和「毛玻璃」两种样式之间切换。</li>
+        <li><b>按键</b>：眼睛尽量不看真键盘，用变色的那根手指去按。按对自动出下一个；按错时字符会抖一下、变红，停在原题直到按对。</li>
+        <li><b>回位</b>：每按完一个键，手指马上回到基准键。</li>
+        <li><b>目标</b>：本模式只练单个键，不练 Shift 组合键。先求准，「连对」越高说明越熟。</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="ds-card" data-panel="speed" hidden>
+    <div class="ds-card__header"><h2 class="ds-h2">使用说明 · 提升速度</h2></div>
+    <div class="ds-card__body">
+      <ol class="guide">
+        <li><b>姿势</b>：手放在基准键上（左手 A S D F，右手 J K L ;），眼睛只看显示框，不看键盘。</li>
+        <li><b>看文字</b>：灰色是还没打的字，打对变黑，打错标红；红色竖线是光标，指着下一个要打的字。</li>
+        <li><b>打错了</b>：可以按 delete 退格改正，也可以不管、继续往下打。退格改正后红色会消失，但按错的那一次仍然算进准确率。</li>
+        <li><b>看颜色</b>：键盘的颜色表示每根手指负责的键，和「熟悉键位」里手指的颜色一一对应。忘了某个键归哪根手指，就瞄一眼颜色，再凭手感去按。</li>
+        <li><b>大写和上排符号</b>：要按住 Shift，用另一只手的小指按。例如打 A：右手小指按住右边的 Shift，左手小指按 A。</li>
+        <li><b>按钮</b>：「换一段」换一段示例文字；「重打」从头开始；「自定义文字」可以粘贴自己的英文。打完后按空格或回车再来一次。</li>
+        <li><b>成绩</b>：WPM 是每分钟打对的词数（每 5 个字符算一个词）；准确率 = 按对的次数 ÷ 总按键次数。</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

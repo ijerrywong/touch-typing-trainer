@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3b 选一双手</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../../src/styles/fingers.css">
+<link rel="stylesheet" href="../../src/styles/keyboard.css">
+<link rel="stylesheet" href="../../src/styles/hand.css">
+<link rel="stylesheet" href="variants-tokens.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">选一双手（10 选 1）</h1>
+    <p class="ds-muted">点任意一张卡片可以放大 / 缩回。下面的字符和「自动演示」会同时作用到所有手上，用来看手指变色的效果。选好后告诉我编号，也可以说「3 的手形 + 6 的画法」这样组合。</p>
+  </header>
+  <div class="ds-row">
+    <label class="ds-row">字符 <input class="ds-input" id="char" maxlength="1" value="e"></label>
+    <button class="ds-btn" id="demo">自动演示：关</button>
+  </div>
+  <div class="spike-grid" id="grid"></div>
+</main>
+<script type="module">
+  import { createKeyboard } from '../../src/keyboard.js';
+  import { createHand } from '../../src/hand.js';
+  import { SHAPES } from '../../src/hand-geometry.js';
+  import { SINGLE_KEY, strokeFor } from '../../src/keymap.js';
+
+  // ---- 手形 ----
+  const CURRENT = {};
+  const CURLED = SHAPES.curled; // 已选用，定义移到 src/hand-geometry.js
+  const SLENDER = { // 修长：手指细、长、一路收尖，弯得多一点
+    rootY: 0.75, widthScale: 0.84, profile: 'slender', tipLift: 0.1,
+    bend: { P: 0.08, R: 0.04, M: 0.01, I: -0.03, T: -0.1 },
+  };
+  const THICK = { // 厚实：手指粗、手掌宽
+    rootY: 0.45, widthScale: 1.14, palmSpread: 1.25, root: { P: [0.22, 0.2] }, thumbRoot: [0, 1.5],
+  };
+  const SPLAY = { // 放松张开：指根更聚拢，手指呈扇形
+    rootY: 0.55, root: { P: [0.5, 0.3], R: [0.22, 0.1], M: [0.02, 0], I: [-0.18, 0.1] },
+    bend: { P: 0.1, R: 0.05, M: 0, I: -0.05, T: -0.12 }, thumbTip: [1.05, 0.05],
+  };
+  const CARTOON = { widthScale: 1.15, profile: 'sausage', rootY: 0.35, creases: [0, 0] };
+
+  const VARIANTS = [
+    { name: '写实 · 现在这版', desc: '对照组。手指偏直偏长，有指甲、褶皱、骨节、投影。', style: 'real', shape: CURRENT },
+    { name: '写实 · 弯指打字', desc: '手指自然弯曲，从上往下看更短更粗，指根在下排上方，最接近真实打字姿势。', style: 'real', shape: CURLED },
+    { name: '写实 · 纤细修长', desc: '手指细长、指尖收尖，带一点弧度，偏秀气。', style: 'real', shape: SLENDER },
+    { name: '写实 · 厚实（深肤色）', desc: '手指粗、手掌宽，换成深一些的肤色。肤色可以和任何手形搭配。', style: 'real', shape: THICK, cls: 'hv-deep' },
+    { name: '写实 · 放松张开', desc: '手指从指根呈扇形散开，更放松。', style: 'real', shape: SPLAY },
+    { name: '扁平插画', desc: '弯指手形 + 纯色 + 一圈外轮廓，像 App 里的插图。干净、不抢键盘。', style: 'flat', shape: CURLED, cls: 'hv-flat' },
+    { name: '线稿', desc: '只有轮廓线、指甲和关节线，下面的键完全看得清。', style: 'line', shape: CURLED },
+    { name: '半透明剪影', desc: '只有一块淡淡的手形，没有任何细节，最不挡键盘。', style: 'silhouette', shape: CURRENT, cls: 'hv-sil' },
+    { name: '卡通', desc: '圆滚滚的手指、粗黑轮廓，活泼，适合小朋友。', style: 'cartoon', shape: CARTOON, cls: 'hv-cartoon' },
+    { name: '毛玻璃', desc: '弯指手形，冷色半透明 + 亮边，偏现代界面风格，不像真手。', style: 'glass', shape: CURLED },
+  ];
+
+  const grid = document.getElementById('grid');
+  const hands = VARIANTS.map((v, i) => {
+    const card = document.createElement('section');
+    card.className = `ds-card spike-variant ${v.cls ?? ''}`;
+    card.innerHTML = `
+      <div class="ds-card__header"><div class="ds-row"><span class="spike-num">${i + 1}</span><h2 class="ds-h2">${v.name}</h2></div></div>
+      <div class="ds-card__body ds-stack"><p class="ds-muted">${v.desc}</p><div class="kb-slot"></div></div>`;
+    card.onclick = () => card.classList.toggle('is-wide');
+    grid.append(card);
+    const kb = createKeyboard();
+    kb.mount(card.querySelector('.kb-slot'));
+    const hand = createHand(kb, { style: v.style, shape: v.shape });
+    hand.show();
+    return { kb, hand };
+  });
+
+  function showChar(c) {
+    const s = strokeFor(c);
+    for (const { kb, hand } of hands) {
+      kb.setTargets(s ? s.keyIds : []);
+      hand.setActive(s ? s.fingers : []);
+    }
+  }
+  const input = document.getElementById('char');
+  input.oninput = () => showChar(input.value);
+  showChar(input.value);
+
+  let timer = null;
+  document.getElementById('demo').onclick = (e) => {
+    if (timer) { clearInterval(timer); timer = null; e.target.textContent = '自动演示：关'; return; }
+    e.target.textContent = '自动演示：开';
+    timer = setInterval(() => {
+      const c = SINGLE_KEY[Math.floor(Math.random() * SINGLE_KEY.length)];
+      input.value = c;
+      showChar(c);
+    }, 1200);
+  };
+</script>
+</body>
+</html>

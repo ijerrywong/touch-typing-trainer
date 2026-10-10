@@ -1,0 +1,45 @@
+/* 10 双手的配色变体。只覆盖 app-tokens.css 里已有的 --hand-* token，组件 CSS 不动。 */
+
+/* 4 写实 · 深肤色 */
+.hv-deep {
+  --hand-skin-light: #C08A6B;
+  --hand-skin: #A06A4C;
+  --hand-skin-dark: #83533A;
+  --hand-shade: #4A2818;
+  --hand-highlight: #E8C6B2;
+  --hand-crease: #5E3420;
+  --hand-nail: #E2C0B0;
+  --hand-nail-edge: #8A5A44;
+  --hand-opacity: 0.85;
+}
+
+/* 6 扁平插画 */
+.hv-flat {
+  --hand-skin: #F2C4A4;
+  --hand-outline: #9A5A44;
+  --hand-outline-radius: 2.5;
+  --hand-crease: #C98E78;
+  --hand-nail: #FBE6DD;
+  --hand-nail-edge: #C98E78;
+  --hand-detail-opacity: 0.8;
+  --hand-opacity: 0.9;
+}
+
+/* 8 半透明剪影 */
+.hv-sil {
+  --hand-skin: #E09A78;
+  --hand-opacity: 0.42;
+}
+
+/* 9 卡通 */
+.hv-cartoon {
+  --hand-skin: #FFD1AE;
+  --hand-outline: #4A2A20;
+  --hand-outline-radius: 3.5;
+  --hand-nail: #FFF4EE;
+  --hand-nail-edge: #4A2A20;
+  --hand-highlight: #FFFFFF;
+  --hand-opacity: 0.95;
+}
+
+/* 7 线稿、10 毛玻璃已选用，配色移到 src/styles/app-tokens.css */

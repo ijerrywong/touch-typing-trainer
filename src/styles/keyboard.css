@@ -1,0 +1,69 @@
+/* 虚拟键盘。零字面量，取值见 app-tokens.css */
+
+.kb {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-body);
+  user-select: none;
+}
+
+.kb-case {
+  fill: var(--kb-case);
+  stroke: var(--kb-case-border);
+  stroke-width: var(--kb-stroke);
+}
+
+.kb-cap {
+  fill: var(--kb-key);
+  stroke: var(--kb-key-border);
+  stroke-width: var(--kb-stroke);
+  transition: fill var(--motion-fast) var(--ease), stroke var(--motion-fast) var(--ease);
+}
+
+.kb-bump {
+  stroke: var(--kb-label);
+  stroke-width: var(--kb-stroke-strong);
+  stroke-linecap: round;
+}
+
+/* 提升模式：键帽按手指上色 */
+.kb--colored .kb-key[data-finger] .kb-cap {
+  fill: var(--f-tint);
+  stroke: var(--f);
+}
+
+/* 熟悉模式：要按的键，用它手指的颜色，和手上那根手指对上 */
+.kb-key.is-target .kb-cap {
+  fill: var(--f-tint);
+  stroke: var(--f);
+  stroke-width: var(--kb-stroke-strong);
+  animation: kb-pulse var(--kb-pulse) var(--ease) infinite;
+}
+@keyframes kb-pulse {
+  50% { fill: var(--f); }
+}
+
+/* 按键反馈 */
+.kb-key.is-press-ok .kb-cap { animation: kb-press-ok var(--motion-normal) var(--ease); }
+.kb-key.is-press-err .kb-cap { animation: kb-press-err var(--motion-normal) var(--ease); }
+.kb-key.is-press-neutral .kb-cap { animation: kb-press-neutral var(--motion-normal) var(--ease); }
+@keyframes kb-press-ok { from { fill: var(--kb-press-ok-tint); stroke: var(--kb-press-ok); } }
+@keyframes kb-press-err { from { fill: var(--kb-press-err-tint); stroke: var(--kb-press-err); } }
+@keyframes kb-press-neutral { from { fill: var(--kb-key-border); } }
+
+/* ---- 标签：在手的上面，带一圈底色描边保证压在手上也看得清 ---- */
+.kb-text {
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: var(--kb-label);
+  stroke: var(--kb-label-halo);
+  stroke-width: var(--kb-stroke-strong);
+  stroke-linejoin: round;
+  paint-order: stroke;
+  pointer-events: none;
+}
+.kb-text--letter { font-size: var(--kb-label-lg); font-weight: var(--weight-display); }
+.kb-text--main { font-size: var(--kb-label-md); font-weight: var(--weight-display); }
+.kb-text--top { font-size: var(--kb-label-sm); font-weight: var(--weight-strong); fill: var(--kb-label-muted); }
+.kb-text--mod { font-size: var(--kb-label-xs); font-weight: var(--weight-medium); fill: var(--kb-label-muted); }

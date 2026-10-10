@@ -1,0 +1,96 @@
+/* 应用层 token：dashboard-swiss 包里没有、只属于打字练习的值。
+ * 整个项目里只有这个文件（和 vendor/ 的基础包）允许写字面量。
+ * 依赖：vendor/ds/dashboard-swiss/tokens.css
+ */
+:root {
+  /* ---- 手指色：沿用指法图 make.py。--finger-*：描边/强调；--finger-*-tint：键帽底色 ---- */
+  --finger-lp: #D9433A;  --finger-lp-tint: #FBD3CF;
+  --finger-lr: #E07B12;  --finger-lr-tint: #FCE0C2;
+  --finger-lm: #B8900A;  --finger-lm-tint: #FFF0B0;
+  --finger-li: #2E9D52;  --finger-li-tint: #CDEFD8;
+  --finger-ri: #2F7FD8;  --finger-ri-tint: #D2E4FA;
+  --finger-rm: #8A44B0;  --finger-rm-tint: #E8D6F2;
+  --finger-rr: #CC2F7E;  --finger-rr-tint: #F9D2E6;
+  --finger-rp: #7A5544;  --finger-rp-tint: #EADDD5;
+  --finger-th: #6B7780;  --finger-th-tint: #E3E7EA;
+
+  /* ---- 键盘（SVG 坐标，1 个字母键宽 = 60 单位，下面的 px 都是 SVG 内单位） ---- */
+  --kb-case: var(--color-surface-sunken);
+  --kb-case-border: var(--color-border);
+  --kb-key: var(--color-surface-raised);
+  --kb-key-border: var(--color-border-strong);
+  --kb-label: var(--color-fg);
+  --kb-label-muted: var(--color-fg-muted);
+  --kb-label-halo: var(--color-surface-raised);
+  --kb-stroke: 1.2px;
+  --kb-stroke-strong: 3px;
+  --kb-key-radius: 6;          /* 读进 rx 属性，无单位 */
+  --kb-label-lg: 24px;         /* 字母 */
+  --kb-label-md: 18px;         /* 符号键下排 */
+  --kb-label-sm: 12px;         /* 符号键上排 */
+  --kb-label-xs: 11px;         /* 修饰键 */
+  --kb-press-ok: var(--color-success);
+  --kb-press-err: var(--color-danger);
+  --kb-press-ok-tint: var(--color-success-subtle);
+  --kb-press-err-tint: var(--color-danger-subtle);
+  --kb-pulse: 1.2s;
+  --kb-max-width: 56rem;        /* 带手时约 490px 高，900px 屏幕不用滚动 */
+
+  /* ---- 手（从上往下看的真手，皮肤与阴影取暖色） ---- */
+  --hand-skin-light: #F7D6C1;
+  --hand-skin: #EDBB9A;
+  --hand-skin-dark: #D9A07E;
+  --hand-shade: #9A5A42;          /* 轮廓内侧暗边 */
+  --hand-shade-opacity: 0.55;
+  --hand-shadow: #3B2A22;         /* 投到键盘上的影子 */
+  --hand-shadow-opacity: 0.28;
+  --hand-highlight: #FFF1E8;      /* 骨节、指甲反光 */
+  --hand-crease: #A8674E;         /* 关节褶皱 */
+  --hand-crease-width: 1px;
+  --hand-shine-width: 1.6px;
+  --hand-nail: #F9E1D8;
+  --hand-nail-edge: #C98E78;
+  --hand-detail-opacity: 0.55;
+  --hand-knuckle-opacity: 0.45;
+  --hand-outline: var(--hand-crease);  /* 扁平/线稿/卡通的轮廓色 */
+  --hand-outline-radius: 2;       /* 轮廓粗细，读进 SVG 滤镜，无单位 */
+  --hand-opacity: 0.8;            /* 整只手半透明，盖住的键帽还能隐约看见 */
+  --hand-active-opacity: 0.45;
+  --hand-reach-duration: 240ms;   /* 手指伸过去 / 收回来的时间 */
+  --hand-reach-cycle: 1.6s;       /* 循环演示、指尖轻点的周期 */
+  --hand-shift-ratio: 0.4;        /* 整只手跟着挪时，手平移占总距离的比例 */
+  --hand-ghost-dash: 4 3;         /* 虚影的虚线样式 */
+
+  /* ---- 显示框 ---- */
+  --prompt-size: 6rem;          /* 熟悉模式的大字 */
+  --text-wrong-bg: var(--color-danger-subtle);
+  --text-wrong-fg: var(--color-danger);
+  --text-correct-fg: var(--color-fg);
+  --text-pending-fg: var(--color-fg-subtle);
+  --text-cursor: var(--color-accent);
+  --text-cursor-width: 2px;
+}
+
+/* ---- 手的两种画法（熟悉键位模式可切换）。只覆盖上面的 --hand-* ---- */
+.hand--line {                       /* 线稿 */
+  --hand-skin: #000000;             /* 只取形状给滤镜描边，本身不显示 */
+  --hand-outline: #6E4A3E;
+  --hand-outline-radius: 1.8;
+  --hand-crease: #6E4A3E;
+  --hand-nail: transparent;
+  --hand-nail-edge: #6E4A3E;
+  --hand-highlight: transparent;
+  --hand-detail-opacity: 0.7;
+  --hand-opacity: 1;
+}
+.hand--glass {                      /* 毛玻璃 */
+  --hand-skin: #DCE7F2;
+  --hand-outline: #8EA6BE;
+  --hand-outline-radius: 1.5;
+  --hand-shadow: #34506B;
+  --hand-shadow-opacity: 0.3;
+  --hand-nail: #FFFFFF;
+  --hand-nail-edge: #8EA6BE;
+  --hand-highlight: #FFFFFF;
+  --hand-opacity: 0.72;
+}

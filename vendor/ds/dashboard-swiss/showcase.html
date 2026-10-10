@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>后台原语样板</title>
+<link rel="stylesheet" href="./tokens.css">
+<link rel="stylesheet" href="./primitives.css">
+<style>body { margin: 0; }</style>
+</head>
+<body class="ds">
+<div class="ds-app">
+
+  <aside class="ds-sidebar">
+    <div class="ds-stack">
+      <div class="ds-brand">Meridian</div>
+      <span class="ds-subtle" style="font-size: var(--text-xs)">运营控制台</span>
+    </div>
+    <nav class="ds-nav">
+      <a class="ds-nav__item is-active" href="#">概览</a>
+      <a class="ds-nav__item" href="#">订单</a>
+      <a class="ds-nav__item" href="#">客户</a>
+      <a class="ds-nav__item" href="#">库存</a>
+      <a class="ds-nav__item" href="#">报表</a>
+    </nav>
+    <nav class="ds-nav" style="margin-top: auto">
+      <a class="ds-nav__item" href="#">设置</a>
+      <a class="ds-nav__item" href="#">帮助</a>
+    </nav>
+  </aside>
+
+  <div>
+    <header class="ds-topbar">
+      <div class="ds-row">
+        <span class="ds-label">概览</span>
+        <span class="ds-badge ds-badge--accent">实时</span>
+      </div>
+      <div class="ds-row">
+        <input class="ds-input" type="search" placeholder="搜索订单号…" style="width: var(--layout-sidebar)">
+        <button class="ds-btn ds-btn--ghost">导出</button>
+        <button class="ds-btn ds-btn--primary">新建订单</button>
+      </div>
+    </header>
+
+    <main class="ds-main">
+
+      <section class="ds-sections">
+        <div class="ds-stack">
+          <h1 class="ds-h1">本周表现</h1>
+          <p class="ds-text ds-muted">截至 9 月 13 日 14:00，对比上周同期。数字每 5 分钟刷新一次。</p>
+        </div>
+
+        <div class="ds-grid">
+          <div class="ds-card ds-span-3"><div class="ds-card__body">
+            <div class="ds-metric">
+              <span class="ds-label">总营收</span>
+              <span class="ds-metric__value">¥1,284,930</span>
+              <span class="ds-metric__delta is-up">↑ 12.4%</span>
+            </div>
+          </div></div>
+          <div class="ds-card ds-span-3"><div class="ds-card__body">
+            <div class="ds-metric">
+              <span class="ds-label">订单数</span>
+              <span class="ds-metric__value">3,472</span>
+              <span class="ds-metric__delta is-up">↑ 5.1%</span>
+            </div>
+          </div></div>
+          <div class="ds-card ds-span-3"><div class="ds-card__body">
+            <div class="ds-metric">
+              <span class="ds-label">退款率</span>
+              <span class="ds-metric__value">2.8%</span>
+              <span class="ds-metric__delta is-down">↓ 0.6pt</span>
+            </div>
+          </div></div>
+          <div class="ds-card ds-span-3"><div class="ds-card__body">
+            <div class="ds-metric">
+              <span class="ds-label">平均客单价</span>
+              <span class="ds-metric__value">¥370</span>
+              <span class="ds-metric__delta is-up">↑ 6.9%</span>
+            </div>
+          </div></div>
+        </div>
+      </section>
+
+      <section class="ds-sections">
+        <div class="ds-tabs">
+          <button class="ds-tab is-active">全部订单</button>
+          <button class="ds-tab">待处理</button>
+          <button class="ds-tab">已发货</button>
+          <button class="ds-tab">异常</button>
+        </div>
+
+        <div class="ds-card">
+          <div class="ds-card__header">
+            <h2 class="ds-h2">最近订单</h2>
+            <div class="ds-row">
+              <button class="ds-btn ds-btn--ghost">筛选</button>
+              <button class="ds-btn">批量操作</button>
+            </div>
+          </div>
+          <table class="ds-table">
+            <thead><tr>
+              <th>订单号</th><th>客户</th><th>状态</th>
+              <th class="is-numeric">金额</th><th class="is-numeric">下单时间</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td class="ds-mono">#ORD-48213</td><td>林知远</td>
+                <td><span class="ds-badge ds-badge--success">已发货</span></td>
+                <td class="is-numeric">¥1,240.00</td><td class="is-numeric ds-muted">09-13 11:24</td>
+              </tr>
+              <tr>
+                <td class="ds-mono">#ORD-48212</td><td>周砚</td>
+                <td><span class="ds-badge ds-badge--warning">待付款</span></td>
+                <td class="is-numeric">¥368.00</td><td class="is-numeric ds-muted">09-13 10:58</td>
+              </tr>
+              <tr>
+                <td class="ds-mono">#ORD-48211</td><td>苏晚照</td>
+                <td><span class="ds-badge ds-badge--danger">已退款</span></td>
+                <td class="is-numeric">¥2,980.00</td><td class="is-numeric ds-muted">09-13 09:41</td>
+              </tr>
+              <tr>
+                <td class="ds-mono">#ORD-48210</td><td>何叙</td>
+                <td><span class="ds-badge">草稿</span></td>
+                <td class="is-numeric">¥96.00</td><td class="is-numeric ds-muted">09-12 22:07</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ds-grid">
+        <div class="ds-card ds-span-6">
+          <div class="ds-card__header"><h2 class="ds-h2">新建客户</h2></div>
+          <div class="ds-card__body">
+            <div class="ds-sections">
+              <div class="ds-stack">
+                <div class="ds-field">
+                  <label class="ds-label" for="f-name">客户名称</label>
+                  <input class="ds-input" id="f-name" placeholder="公司或个人全称">
+                </div>
+                <div class="ds-field">
+                  <label class="ds-label" for="f-tier">等级</label>
+                  <select class="ds-select" id="f-tier"><option>标准</option><option>优先</option></select>
+                  <span class="ds-field__hint">等级决定结算周期与折扣上限。</span>
+                </div>
+                <div class="ds-field">
+                  <label class="ds-label" for="f-note">备注</label>
+                  <textarea class="ds-textarea" id="f-note" placeholder="可留空"></textarea>
+                </div>
+              </div>
+              <div class="ds-row">
+                <button class="ds-btn ds-btn--primary">保存</button>
+                <button class="ds-btn">保存并新建</button>
+                <button class="ds-btn ds-btn--ghost ds-row-end">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ds-card ds-span-6">
+          <div class="ds-card__header"><h2 class="ds-h2">原语清单</h2></div>
+          <div class="ds-card__body">
+            <div class="ds-sections">
+              <div class="ds-stack">
+                <span class="ds-label">按钮</span>
+                <div class="ds-row">
+                  <button class="ds-btn ds-btn--primary">主要</button>
+                  <button class="ds-btn">次要</button>
+                  <button class="ds-btn ds-btn--ghost">幽灵</button>
+                  <button class="ds-btn ds-btn--danger">删除</button>
+                  <button class="ds-btn" disabled>禁用</button>
+                </div>
+              </div>
+              <div class="ds-stack">
+                <span class="ds-label">状态徽章</span>
+                <div class="ds-row">
+                  <span class="ds-badge">中性</span>
+                  <span class="ds-badge ds-badge--accent">强调</span>
+                  <span class="ds-badge ds-badge--success">成功</span>
+                  <span class="ds-badge ds-badge--warning">警告</span>
+                  <span class="ds-badge ds-badge--danger">危险</span>
+                </div>
+              </div>
+              <div class="ds-stack">
+                <span class="ds-label">文字层级</span>
+                <h1 class="ds-h1">一级标题</h1>
+                <h2 class="ds-h2">二级标题</h2>
+                <h3 class="ds-h3">三级标题</h3>
+                <p class="ds-text">正文。测量宽度由 --measure 约束，长段落不会横贯整屏，眼睛换行时不会丢行。</p>
+                <p class="ds-text ds-muted">次级文字，用于说明与辅助信息。</p>
+                <p class="ds-text ds-subtle">弱化文字，用于时间戳这类可忽略的内容。</p>
+              </div>
+              <hr class="ds-divider">
+              <div class="ds-empty">空状态：还没有任何记录</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+</body>
+</html>

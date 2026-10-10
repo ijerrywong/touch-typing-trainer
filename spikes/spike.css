@@ -1,0 +1,12 @@
+/* spike 测试台的公共布局。零字面量。 */
+.spike { max-width: var(--layout-max); margin: 0 auto; padding: var(--space-gutter); display: flex; flex-direction: column; gap: var(--space-section); }
+.spike-log { font-family: var(--font-mono); font-size: var(--text-sm); height: calc(var(--space-9) * 3); overflow: auto; background: var(--color-surface-sunken); padding: var(--space-inset); margin: 0; }
+.spike-check { display: flex; flex-direction: column; gap: var(--space-1); padding-left: var(--space-5); margin: 0; }
+.spike-scroll-pad { height: calc(var(--space-9) * 20); }
+
+/* 05-hands：并排对比 */
+.spike-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-gutter); }
+.spike-grid > .is-wide { grid-column: 1 / -1; }
+.spike-variant { cursor: zoom-in; }
+.spike-variant.is-wide { cursor: zoom-out; }
+.spike-num { font-family: var(--font-mono); font-weight: var(--weight-display); color: var(--color-accent); }

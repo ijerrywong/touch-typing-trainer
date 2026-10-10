@@ -1,0 +1,10 @@
+/* 每个带 data-finger 的元素拿到自己手指的颜色，组件统一用 --f / --f-tint。零字面量。 */
+[data-finger="LP"] { --f: var(--finger-lp); --f-tint: var(--finger-lp-tint); }
+[data-finger="LR"] { --f: var(--finger-lr); --f-tint: var(--finger-lr-tint); }
+[data-finger="LM"] { --f: var(--finger-lm); --f-tint: var(--finger-lm-tint); }
+[data-finger="LI"] { --f: var(--finger-li); --f-tint: var(--finger-li-tint); }
+[data-finger="RI"] { --f: var(--finger-ri); --f-tint: var(--finger-ri-tint); }
+[data-finger="RM"] { --f: var(--finger-rm); --f-tint: var(--finger-rm-tint); }
+[data-finger="RR"] { --f: var(--finger-rr); --f-tint: var(--finger-rr-tint); }
+[data-finger="RP"] { --f: var(--finger-rp); --f-tint: var(--finger-rp-tint); }
+[data-finger="TH"] { --f: var(--finger-th); --f-tint: var(--finger-th-tint); }

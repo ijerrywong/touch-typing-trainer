@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S2 虚拟键盘</title>
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/tokens.css">
+<link rel="stylesheet" href="../../vendor/ds/dashboard-swiss/primitives.css">
+<link rel="stylesheet" href="../../src/styles/app-tokens.css">
+<link rel="stylesheet" href="../../src/styles/fingers.css">
+<link rel="stylesheet" href="../../src/styles/keyboard.css">
+<link rel="stylesheet" href="../spike.css">
+</head>
+<body class="ds">
+<main class="spike">
+  <header class="ds-stack">
+    <h1 class="ds-h1">S2 虚拟键盘</h1>
+    <ol class="spike-check ds-muted">
+      <li>键盘和 MacBook 一致，每排宽度对齐，F / J 有小凸起</li>
+      <li>「按手指上色」开关：颜色和指法图一致</li>
+      <li>「随机目标」：目标键用它手指的颜色闪烁</li>
+      <li>在真实键盘上按任意键，虚拟键盘对应的键闪一下</li>
+    </ol>
+  </header>
+  <div class="ds-row">
+    <button class="ds-btn" id="colored">按手指上色：关</button>
+    <button class="ds-btn" id="target">随机目标</button>
+    <button class="ds-btn" id="ok">目标键：按对</button>
+    <button class="ds-btn" id="err">目标键：按错</button>
+    <span class="ds-muted" id="info"></span>
+  </div>
+  <div id="kb"></div>
+</main>
+<script type="module">
+  import { createKeyboard } from '../../src/keyboard.js';
+  import { TYPABLE, strokeFor } from '../../src/keymap.js';
+
+  const kb = createKeyboard();
+  kb.mount(document.getElementById('kb'));
+
+  let colored = false;
+  let target = null;
+  document.getElementById('colored').onclick = (e) => {
+    colored = !colored;
+    kb.setColored(colored);
+    e.target.textContent = `按手指上色：${colored ? '开' : '关'}`;
+  };
+  document.getElementById('target').onclick = () => {
+    const c = TYPABLE[Math.floor(Math.random() * TYPABLE.length)];
+    const s = strokeFor(c);
+    target = s.keyId;
+    kb.setTargets(s.keyIds);
+    document.getElementById('info').textContent = `字符 ${JSON.stringify(c)} → ${s.keyIds.join(' + ')}`;
+  };
+  document.getElementById('ok').onclick = () => target && kb.press(target, 'ok');
+  document.getElementById('err').onclick = () => target && kb.press(target, 'err');
+  addEventListener('keydown', (e) => kb.press(e.code));
+</script>
+</body>
+</html>

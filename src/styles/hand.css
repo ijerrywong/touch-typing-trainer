@@ -1,0 +1,68 @@
+/* 搭在键盘上的手。零字面量，取值见 app-tokens.css */
+
+.hand {
+  pointer-events: none;
+  opacity: var(--hand-opacity);
+}
+
+/* 皮肤渐变 */
+.hand-skin-light { stop-color: var(--hand-skin-light); }
+.hand-skin-mid { stop-color: var(--hand-skin); }
+.hand-skin-dark { stop-color: var(--hand-skin-dark); }
+
+/* 立体感：内侧暗边、投影 */
+.hand-fx-shade { flood-color: var(--hand-shade); flood-opacity: var(--hand-shade-opacity); }
+.hand-fx-shadow { flood-color: var(--hand-shadow); flood-opacity: var(--hand-shadow-opacity); }
+.hand-fx-outline { flood-color: var(--hand-outline); }
+
+/* 非写实画法：皮肤是纯色（盖掉 JS 给的渐变） */
+.hand--flat .hand-body,
+.hand--line .hand-body,
+.hand--silhouette .hand-body,
+.hand--cartoon .hand-body,
+.hand--glass .hand-body { fill: var(--hand-skin); }
+
+/* 手腕淡出：遮罩只看透明度 */
+.hand-fade { mask-type: alpha; }
+.hand-fade-on { stop-opacity: 1; }
+.hand-fade-off { stop-opacity: 0; }
+
+/* 细节 */
+.hand-knuckle { fill: var(--hand-highlight); opacity: var(--hand-knuckle-opacity); }
+.hand-crease {
+  fill: none;
+  stroke: var(--hand-crease);
+  stroke-width: var(--hand-crease-width);
+  stroke-linecap: round;
+  opacity: var(--hand-detail-opacity);
+}
+.hand-nail {
+  fill: var(--hand-nail);
+  stroke: var(--hand-nail-edge);
+  stroke-width: var(--hand-crease-width);
+}
+.hand-nail-shine {
+  fill: none;
+  stroke: var(--hand-highlight);
+  stroke-width: var(--hand-shine-width);
+  stroke-linecap: round;
+}
+
+/* 要用的手指：淡色填充 */
+.hand-active-finger {
+  fill: var(--f);
+  opacity: 0;
+  transition: opacity var(--motion-normal) var(--ease);
+}
+.hand-active-finger.is-active { opacity: var(--hand-active-opacity); }
+
+/* 伸长时留在基准键上的虚影 */
+.hand-ghost {
+  fill: none;
+  stroke: var(--f);
+  stroke-width: var(--hand-crease-width);
+  stroke-dasharray: var(--hand-ghost-dash);
+  opacity: 0;
+  transition: opacity var(--motion-normal) var(--ease);
+}
+.hand-ghost.is-visible { opacity: 1; }

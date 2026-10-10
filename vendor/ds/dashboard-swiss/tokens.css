@@ -1,0 +1,113 @@
+/* 由 scripts/build.py 从 tokens/dashboard/swiss.json 生成，请勿手改。
+ * 瑞士精密 — 高密度、中性灰阶、单一强调红、直角、几乎无阴影。信息本身是主角，样式退到背景里。
+ * 适用：后台、控制台、数据表、设置页、内部工具。信息密度高、用户每天要看很久的界面。
+ * 配色：RYB 0° 红 · triad · 红 + 黄 + 蓝
+ * 不适用：面向消费者的营销页面 —— 它刻意不讨好，缺少情绪。
+ */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ---- 字体 ---- */
+  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* 字号阶梯：14px x 1.25^n，档位之间不得手填中间值（对比） */
+  --text-2xs: 0.56rem;
+  --text-xs: 0.7rem;
+  --text-sm: 0.7826rem;
+  --text-base: 0.875rem;
+  --text-lg: 1.0938rem;
+  --text-xl: 1.3672rem;
+  --text-2xl: 1.709rem;
+  --text-3xl: 2.1362rem;
+  --text-4xl: 2.6703rem;
+
+  --weight-body: 400;
+  --weight-medium: 500;
+  --weight-strong: 600;
+  --weight-display: 700;
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+  --leading-loose: 1.7;
+  --tracking-tight: -0.015em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+  --measure: 78ch;
+
+  /* ---- 间距：唯一比例尺（重复） ---- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* 语义间距：组内与组间硬性拉开（亲密性） */
+  --space-group: 0.5rem;
+  --space-section: 2rem;
+  --space-inset: 0.75rem;
+  --space-gutter: 1.5rem;
+
+  /* ---- 颜色：由色轮生成，改 tokens 里的 hue 即整套重算 ---- */
+  --color-bg: #FCF8F7;
+  --color-surface: #FFFEFE;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-sunken: #F2EEED;
+  --color-border: #DFDAD9;
+  --color-border-strong: #BFBBBA;
+  --color-fg-inverse: #FFFDFC;
+  --color-fg: #272120;
+  --color-fg-muted: #635C5A;
+  --color-fg-subtle: #8C8483;
+  --color-accent-subtle: #FFEAE6;
+  --color-accent: #C13D30;
+  --color-accent-hover: #A21D14;
+  --color-accent-fg: #FFFDFC;
+  --color-focus: #C13D30;
+  --color-accent-2: #777700;
+  --color-accent-2-subtle: #F0F1DB;
+  --color-accent-3: #3D6AD3;
+  --color-accent-3-subtle: #E7EFFF;
+  --color-success-subtle: #E2F5E4;
+  --color-success: #007F30;
+  --color-warning-subtle: #FCECDA;
+  --color-warning: #905C00;
+  --color-danger-subtle: #FFEAE7;
+  --color-danger: #B6322D;
+
+  /* ---- 圆角 / 阴影 / 描边：各限三档（重复） ---- */
+  --radius-sm: 0;
+  --radius-md: 0.125rem;
+  --radius-lg: 0.1875rem;
+  --shadow-sm: none;
+  --shadow-md: 0 1px 2px rgba(17, 17, 17, 0.08);
+  --shadow-lg: 0 4px 16px rgba(17, 17, 17, 0.12);
+  --border-width: 1px;
+  --border-color: #DFDAD9;
+  --border-strong: #BFBBBA;
+
+  /* ---- 布局：primitives 中块级边缘的唯一来源（对齐） ---- */
+  --layout-columns: 12;
+  --layout-gutter: 1.5rem;
+  --layout-max: 90rem;
+  --layout-sidebar: 14.5rem;
+  --layout-topbar: 3rem;
+  --layout-row: 2.25rem;
+
+  /* ---- 动效 ---- */
+  --motion-fast: 120ms;
+  --motion-normal: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ---- 断点（仅供参考，媒体查询中需写字面量） ---- */
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
